@@ -1,12 +1,11 @@
 {
-  "name": "passwordmanager",
+  "name": "pam-cli",
   "version": "1.0.0",
   "description": "Un simple gestor de contraseñas para la consola",
   "main": "./src/index.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node --esm .\\src\\index.ts"
+    "pam-cli": "npx ts-node --esm .\\src\\index.ts"
   },
   "keywords": [
     "password",

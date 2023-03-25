@@ -30,4 +30,9 @@ export const options: Record<string, Options> = {
         value: 'delete',
         hint: 'Eliminar una contraseña'
     },
+    edit: {
+        label: 'Editar contraseña',
+        value: 'edit',
+        hint: 'Editar una contraseña existente'
+    },
 }

@@ -5,8 +5,7 @@ import { setTimeout } from 'timers/promises'
 import { options } from './options.js'
 import {
   countPasswords,
-  deletePassword,
-  getPassword,
+  deletePassword, editPassword, getPassword,
   listPasswords,
   setPassword
 } from './password.js'
@@ -171,6 +170,48 @@ switch (menu) {
     deletePasswordSpinner.stop('Contraseña eliminada')
     outro('Hasta luego.')
     process.exit(0)
+
+  case 'edit':
+    const editGroup = await p.group(
+      {
+        providerName: (): Promise<string | symbol> =>
+          p.text({
+            message: '¿Cuál es el nombre del proveedor?',
+            placeholder: 'Twitter, Facebook, etc.'
+          }),
+        userName: (): Promise<string | symbol> =>
+          p.text({ message: '¿Cuál es tu nombre de usurio?', placeholder: 'jhonDoe123' }),
+        newPassword: (): Promise<string | symbol> => 
+          p.password({
+            message: '¿Cuál es tu nueva contraseña?',
+            validate: value => {
+              if (value.length < 1) return 'El nombre no puede estar vacío'
+            }
+          }),
+      },
+      {
+        onCancel: (): never => {
+          p.cancel('Opreación cancelada.')
+          process.exit(0)
+        }
+
+      })
+
+    const editPasswordSpinner = spinner()
+    editPasswordSpinner.start('Editando contraseña')
+    await setTimeout(2000)
+    
+    const editedPassword = await editPassword(
+      editGroup.providerName,
+      editGroup.userName,
+      editGroup.newPassword
+    )
+    console.log(editedPassword);
+      
+    editPasswordSpinner.stop('Contraseña eliminada')
+    outro('Hasta luego.')
+    process.exit(0)
+
 }
 
 outro('Hasta luego.')

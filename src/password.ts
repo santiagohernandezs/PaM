@@ -82,3 +82,15 @@ export async function listPasswords():Promise<string| string[] | undefined> {
   }
 
 }
+
+export async function editPassword(providerName:string, userName:string, newPassword:string):Promise<string | undefined> {
+  try {
+    await connectDB()
+    const oldpassword = await passwordSchema.findOneAndUpdate({provider: providerName, name: userName}, {password: newPassword})
+    return oldpassword ? 'La contraseña ha sido actualizada' : 'No se encontró la contraseña'
+  } catch (e:any) {
+    console.log(`Error: ${e.message}`);
+    await mongoose.connection.close()
+    process.exit(1)
+  }
+}

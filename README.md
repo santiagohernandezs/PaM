@@ -1,7 +1,7 @@
 # PaM-cli
 PaM-cli es una interface de línea de comandos para el proyecto PaM (Paquete de Administración de Máquinas) que permite la gestión de contraseñas.
 
-https://user-images.githubusercontent.com/68081080/227738285-e87712b8-1289-47bb-acbd-c4d9cd9fd043.mp4
+https://user-images.githubusercontent.com/68081080/227738486-f95fd58a-63a4-4377-a065-156933624236.mp4
 
 ## Herramientas utilizadas
 - [NodeJS](https://nodejs.org/es/)

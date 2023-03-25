@@ -1,0 +1,28 @@
+{
+  "name": "passwordmanager",
+  "version": "1.0.0",
+  "description": "Un simple gestor de contraseñas para la consola",
+  "main": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx ts-node --esm .\\src\\index.ts"
+  },
+  "keywords": [
+    "password",
+    "manager",
+    "console",
+    "cli"
+  ],
+  "author": "Santiago Hernandez A.K.A. Tao",
+  "license": "ISC",
+  "dependencies": {
+    "@clack/prompts": "^0.6.3",
+    "@types/node": "^18.15.9",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.3",
+    "picocolors": "^1.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}

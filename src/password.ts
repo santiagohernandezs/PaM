@@ -13,6 +13,8 @@ export async function setPassword(provider:string, name:string, password:string)
     await mongoose.connection.close()
   } catch (e:any) {
     console.error(`Error: ${e.message}`)
+    await mongoose.connection.close()
+    process.exit(1)
   }
 }
 

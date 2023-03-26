@@ -4,8 +4,9 @@
 https://user-images.githubusercontent.com/68081080/227738486-f95fd58a-63a4-4377-a065-156933624236.mp4
 
 ## Herramientas utilizadas
-- [NodeJS](https://nodejs.org/es/)
-- [MongoDB](https://www.mongodb.com/es)
+- NodeJS
+- MongoDB
+- TypeScript
 
 ## Requisitos
 - nodejs >= 18.0.0

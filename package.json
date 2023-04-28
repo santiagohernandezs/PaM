@@ -5,7 +5,7 @@
   "main": "./src/index.ts",
   "type": "module",
   "scripts": {
-    "pam-cli": "npx ts-node --esm .\\src\\index.ts"
+    "pam-cli": "ts-node --esm .\\src\\index.ts"
   },
   "keywords": [
     "password",
@@ -17,11 +17,13 @@
   "license": "ISC",
   "dependencies": {
     "@clack/prompts": "^0.6.3",
-    "@types/node": "^18.15.9",
     "dotenv": "^16.0.3",
-    "mongoose": "^7.0.3",
-    "picocolors": "^1.0.0",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.2",
+    "prisma": "^4.13.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.4"
   }
 }

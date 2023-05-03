@@ -197,6 +197,11 @@ switch (menu) {
           }),
         userName: (): Promise<string | symbol> =>
           p.text({ message: '¿Cuál es tu nombre de usurio?', placeholder: 'jhonDoe123' }),
+        oldPassword: (): Promise<string | symbol> =>
+          p.text({
+            message: '¿Cuál es tu antigua contraseña?',
+            placeholder: 'jhonDoe123'
+          }),
         newPassword: (): Promise<string | symbol> =>
           p.password({
             message: '¿Cuál es tu nueva contraseña?',
@@ -216,12 +221,13 @@ switch (menu) {
     const editPasswordSpinner = spinner()
     editPasswordSpinner.start('Editando contraseña')
     await setTimeout(2000)
-    const editedPassword = await updatePassword({
+    await updatePassword({
       provider: editGroup.providerName,
       username: editGroup.userName,
-      password: editGroup.newPassword
+      oldPassword: editGroup.oldPassword,
+      newPassword: editGroup.newPassword
     })
-    editPasswordSpinner.stop('Contraseña eliminada')
+    editPasswordSpinner.stop('Contraseña editada')
     outro('Hasta luego.')
     process.exit(0)
 }

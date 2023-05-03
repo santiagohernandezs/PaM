@@ -12,7 +12,8 @@ type FindByCredentials = {
 type Update = {
   provider: string
   username: string
-  password: string
+  oldPassword: string
+  newPassword: string
 }
 
 type DeleteOne = {
@@ -21,3 +22,4 @@ type DeleteOne = {
 }
 
 export { CreatePassword, FindByCredentials, DeleteOne, Update }
+

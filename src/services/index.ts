@@ -7,6 +7,7 @@ import {
   findMany,
   update
 } from '../controllers/index.ts'
+import { comparePassword, hashPassword } from '../helpers/crypto.ts'
 import type {
   CreatePassword,
   DeleteOne,
@@ -17,7 +18,9 @@ import type {
 const createPassword = async (args: CreatePassword): Promise<Password> => {
   return create({
     data: {
-      ...args
+      provider: args.provider,
+      username: args.username,
+      password: await hashPassword(args.password)
     }
   })
 }
@@ -53,21 +56,32 @@ const deletePassword = async (args: DeleteOne): Promise<Password> => {
 }
 
 const updatePassword = async (args: Update): Promise<Password> => {
-  const password = await findByCredentials({
+  const user = await findByCredentials({
     where: {
       provider: args.provider,
       username: args.username
     }
   })
 
-  return await update({
-    where: {
-      id: password?.id
-    },
-    data: {
-      ...args
-    }
-  })
+  if (!user) throw new Error('User not found')
+
+  const equalPasswords = await comparePassword(args.oldPassword, user.password)
+  console.debug(args.newPassword, equalPasswords)
+  if (equalPasswords) {
+    if (args.oldPassword === args.newPassword)
+      throw new Error('The new password must be different from the old one')
+
+    return await update({
+      where: {
+        id: user?.id
+      },
+      data: {
+        password: await hashPassword(args.newPassword)
+      }
+    })
+  } else {
+    throw new Error('Passwords do not match')
+  }
 }
 
 export {
@@ -78,3 +92,4 @@ export {
   deletePassword,
   updatePassword
 }
+

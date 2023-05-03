@@ -5,10 +5,12 @@ import { setTimeout } from 'timers/promises'
 import { options } from './options.js'
 import {
   countPasswords,
-  deletePassword, editPassword, getPassword,
+  createPassword,
+  deletePassword,
+  findPassword,
   listPasswords,
-  setPassword
-} from './password.js'
+  updatePassword
+} from './services/index.js'
 
 console.clear()
 intro(`${color.bold(color.cyan('Hola Santiago, bienvenido a Password Manager'))}`)
@@ -74,14 +76,11 @@ switch (menu) {
       const savePasswordSpinner = spinner()
       savePasswordSpinner.start('Guardando contraseña')
       await setTimeout(2000)
-
-      const currentPasswords = setPassword(
-        saveGroup.providerName,
-        saveGroup.userName,
-        saveGroup.password
-      )
-      console.log(currentPasswords)
-
+      await createPassword({
+        provider: saveGroup.providerName,
+        username: saveGroup.userName,
+        password: saveGroup.password
+      })
       savePasswordSpinner.stop('Constraseña guardada')
 
       let aditionalPassword = await select({
@@ -120,22 +119,39 @@ switch (menu) {
     const getPasswordSpinner = spinner()
     getPasswordSpinner.start('Buscando contraseña')
     await setTimeout(2000)
-    const password = await getPassword(viewGroup.providerName, viewGroup.userName)
+    const password = await findPassword({
+      provider: viewGroup.providerName,
+      username: viewGroup.userName
+    })
+    console.log(password)
+
     getPasswordSpinner.stop('Contraseña encontrada')
-    console.log(` La contraseña es ${password}`)
 
     outro('Hasta luego.')
     process.exit(0)
 
   case 'count':
+    const countPasswordsSpinner = spinner()
+    countPasswordsSpinner.start('Contando contraseñas')
+    await setTimeout(2000)
     const count = await countPasswords()
-    console.log(count)
+    countPasswordsSpinner.stop(
+      `Tienes ${count} ${count === 1 ? 'contraseña guardada' : 'contraseñas guardadas'}`
+    )
+
     outro('Hasta luego.')
     process.exit(0)
 
   case 'list':
-    const list = await listPasswords()
-    console.log(list)
+    const passwords = await listPasswords()
+    console.log(
+      passwords.map(password => ({
+        provider: password.provider,
+        username: password.username,
+        password: password.password
+      }))
+    )
+
     outro('Hasta luego.')
     process.exit(0)
 
@@ -161,10 +177,10 @@ switch (menu) {
     const deletePasswordSpinner = spinner()
     deletePasswordSpinner.start('Eliminando contraseña')
     await setTimeout(2000)
-    const deletedPassword = await deletePassword(
-      deleteGroup.providerName,
-      deleteGroup.userName
-    )
+    const deletedPassword = await deletePassword({
+      provider: deleteGroup.providerName,
+      username: deleteGroup.userName
+    })
     console.log(deletedPassword)
 
     deletePasswordSpinner.stop('Contraseña eliminada')
@@ -181,37 +197,36 @@ switch (menu) {
           }),
         userName: (): Promise<string | symbol> =>
           p.text({ message: '¿Cuál es tu nombre de usurio?', placeholder: 'jhonDoe123' }),
-        newPassword: (): Promise<string | symbol> => 
+        newPassword: (): Promise<string | symbol> =>
           p.password({
             message: '¿Cuál es tu nueva contraseña?',
             validate: value => {
               if (value.length < 1) return 'El nombre no puede estar vacío'
             }
-          }),
+          })
       },
       {
         onCancel: (): never => {
           p.cancel('Opreación cancelada.')
           process.exit(0)
         }
-
-      })
+      }
+    )
 
     const editPasswordSpinner = spinner()
     editPasswordSpinner.start('Editando contraseña')
     await setTimeout(2000)
-    
-    const editedPassword = await editPassword(
-      editGroup.providerName,
-      editGroup.userName,
-      editGroup.newPassword
-    )
-    console.log(editedPassword);
-      
+    const editedPassword = await updatePassword({
+      provider: editGroup.providerName,
+      username: editGroup.userName,
+      password: editGroup.newPassword
+    })
     editPasswordSpinner.stop('Contraseña eliminada')
     outro('Hasta luego.')
     process.exit(0)
-
 }
 
 outro('Hasta luego.')
+
+let nick: { name: string; edad: number }
+nick = { name: 'nick', edad: 23 }

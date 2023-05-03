@@ -66,7 +66,6 @@ const updatePassword = async (args: Update): Promise<Password> => {
   if (!user) throw new Error('User not found')
 
   const equalPasswords = await comparePassword(args.oldPassword, user.password)
-  console.debug(args.newPassword, equalPasswords)
   if (equalPasswords) {
     if (args.oldPassword === args.newPassword)
       throw new Error('The new password must be different from the old one')
